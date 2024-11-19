@@ -1,6 +1,11 @@
 ---
 title: "Default R Markdown"
-output: html_document
+output: 
+  bookdown::html_document2:
+    theme: dark
+    toc: true
+    number_sections: false
+
 date: "2024-11-19"
 ---
 
