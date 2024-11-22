@@ -6,6 +6,7 @@ output:
     theme: dark
     number_sections: false
 date: "2024-11-22"
+bibliography: references.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -89,3 +90,11 @@ gapminder_latest %>%
   fmt_number(columns = c("avrg_gdp"), decimals = 2) %>%
   tab_caption(caption = md(paste("Table caption: Dynamic formatting with the the help of the `gt` package. This example shows Gapminder data summarised by continent for the year ", year_of_interest, ".", sep = "")))
 ```
+
+
+## Citations
+
+You can find more information about R Markdown in [@XieAllaire_et_2022] and [@XieDervieux_et_2024_BOOK].
+
+
+# Bibliography
