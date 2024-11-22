@@ -1,0 +1,91 @@
+---
+title: "Untitled"
+output: 
+  bookdown::html_document2:
+    toc: true
+    theme: dark
+    number_sections: false
+date: "2024-11-22"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  collapse = TRUE,
+  cache = FALSE,
+  comment = "#>"
+)
+
+library(gapminder)
+library(gt)
+library(dplyr)
+library(ggplot2)
+
+year_of_interest <- 2007
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example Figure \@ref(fig:pressure):
+
+```{r pressure, fig.cap="A simple plot", echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Including ggplots
+
+See a gapminder example plot Figure \@ref(fig:life-expectancy).
+
+```{r life-expectancy, fig.cap="A simple ggplot.", echo=FALSE}
+gapminder %>% 
+    group_by(year) %>%
+    summarise(ale = mean(lifeExp)) %>%
+    ggplot(aes(x = year, y = ale)) +
+    geom_line(color = "orange") +
+    labs(x = "Year", 
+         y = "Average life expectancy") +
+    theme_classic(base_size = 16)
+```
+
+
+## Tables
+
+See this example Table \@ref(tab:gapminder-table)
+
+```{r gapminder-table, echo=FALSE}
+gapminder_latest <- gapminder::gapminder %>% 
+  filter(year == year_of_interest) %>%
+  group_by(continent) %>%
+  summarise(avrg_le = mean(lifeExp),
+            avrg_gdp = mean(gdpPercap))
+            
+gapminder_latest %>%
+  gt() %>%
+  data_color(
+    columns = c("avrg_gdp"),
+    method = "numeric",
+    palette = c("white", "#00A4B2"),
+    domain = c(0, max(gapminder_latest$avrg_gdp)),
+    autocolor_text = FALSE) |>
+  cols_label(
+    continent = "Continent",
+    avrg_le = "Mean life expectancy",
+    avrg_gdp = "Mean GDP") |>
+  fmt_number(columns = c("avrg_le"), decimals = 1) %>%
+  fmt_number(columns = c("avrg_gdp"), decimals = 2) %>%
+  tab_caption(caption = md(paste("Table caption: Dynamic formatting with the the help of the `gt` package. This example shows Gapminder data summarised by continent for the year ", year_of_interest, ".", sep = "")))
+```
